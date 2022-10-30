@@ -1,152 +1,196 @@
-#include "solver.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include "solver.h"
+#include <string.h>
+int canBeDone(int*, size_t, size_t,int);
+int solver_func(int*);
+void init_grid(char*,int*);
+int empty_cell(int*,size_t*,size_t*);
+char* name_file_out(char*);
 
-// Fonction qui return:
-// 1 si la le nombre à la place (i,j) de la matrice est valide
-// 0 sinon
 
-int check_case(int n,int i, int j, int board[9][9])
+int solvMain(char* filename)
 {
-    // check line
-    for (int j0 = 0; j0 < 9; j0++)
-    {
-    if (board[i][j0] == n && j0 != j)
-        {
-            return 0;
-        }
-    }
+	printf("yo");
+	FILE *fileRead;
 
-    // check column
-    for (int i0 = 0; i0 < 9; i0++)
-    {
-        if (board[i0][j] == n && i0 != i){
-        return 0;
-        }
-    }
+	/*if(argc !=2)
+	{
+		printf("Please enter a file.");
+		return 0;
 
-    // determine the start of the square
-    int i0 = 6;
-    int j0 = 6;
+	}*/
+	 
+	//Open your_file in read-only mode
+	fileRead = fopen(filename, "r");
 
-     if (i < 6)
-        i0 = 3;
+ 	if(fileRead == NULL)
+    	{
+		printf("Your file must be filled");
+        	perror("fopen");
+        	exit(EXIT_FAILURE);
+    	}  
 
-    if (i < 3)
-        i0 = 0;
+	//Create a buffer with the space needed
+	char buffer[110];
+   	//Seek to the beginning of the file
+   	fseek(fileRead, 0, SEEK_SET);
 
-    if (j < 6)
-        j0 = 3;
+   	//Read Data and put it on the buffer
+   	size_t useless = fread(buffer, 110, 1, fileRead);
+	useless ++;
+	char* buffer_pt = buffer;
+	fclose(fileRead);
+			
+	//create an int array of 81 element 
+	int grid2[81];
+	int* grid_pt = grid2;
+	init_grid(buffer_pt,grid_pt);
+	int good = solver_func(grid_pt);
+	if(!good)
+	{
+		printf("No solution found.");
+		return 0;
+	}
+			
+	//Writing the file
+	FILE *fileWrite;
+	fileWrite = fopen(name_file_out(filename),"w");
 
-    if(j < 3)
-        j0 = 0;
-
-   
-    // check square
-    for (int i1 = i0; i1 < i0 + 3 ; i1++)
-    {
-        for (int j1 = j0; j1 < j0 + 3; j1++)
-        {
-            if (board[i1][j1] == n)
-            {
-                if (i1 != i && j1 != j)
-                    return 0;
-            }
-        }
-    }
-
-    return 1;
+	for(size_t index = 0; index<82; index++)
+	{
+		fprintf(fileWrite,"%i",*(grid_pt+index));
+		if (index%3 == 2)
+		{
+			if(index%9 == 8)
+			{
+				if(index%27 == 26)
+				{
+					fprintf(fileWrite,"\n");
+				}
+				fprintf(fileWrite,"\n");
+			}
+			else
+			{
+				fprintf(fileWrite," ");
+			}
+		}
+	}
+	fclose(fileWrite);
+	return 1;
 }
 
-//regarde si le sudoku est possible
-int check_sudoku (int board[9][9]){
-
-    for (int i = 0; i < 9; i++)
-    {
-        for (int j = 0; j < 9; j++)
-        {
-            if (board[i][j] != 0)
-            {
-                int check = check_case(board[i][j],i,j,board);
-                if (check == 0)
-                {
-                    return 0;
-                }
-            }
-        }
-    }
-
-    return 1;
-}
-
-// return une liste contenant les 2 indexes de la prochaine case vide
-// si il n'y en a pas , i,j = -1,-1
-int *next_empty (int board[9][9])
+char* name_file_out(char* name)
 {
-    int res0[2] = {-1,-1};
-    int* res = res0;
-    for (int i0 = 0; i0 < 9; i0++)
-    {
-        for (int j0 = 0; j0 < 9; j0++)
-        {
-            if (board[i0][j0] == 0)
-            {    
-                res[0] = i0;
-                res[1] = j0;
-                return res;
-            }
-        }
-    }
-    return res;
+	size_t len_filename = 0;
+	while(*(name+len_filename) != 0)
+	{
+		len_filename++;
+	}
+
+	char* str = malloc((len_filename+7)*sizeof(char));
+	if (str == NULL)
+	{
+		printf("Not enought memory!");
+		return "error";
+	}
+	for(size_t i = 0; i<len_filename; i++)
+	{
+		*(str+i) = *(name+i);
+	}
+	*(str+len_filename) = '.';
+	*(str+len_filename+1) = 'r';
+	*(str+len_filename+2) = 'e';
+	*(str+len_filename+3) = 's';
+	*(str+len_filename+4) = 'u';
+	*(str+len_filename+5) = 'l';
+	*(str+len_filename+6) = 't';
+	*(str+len_filename+7) = 0;
+
+	return str;
 }
 
-// résout le sudoku (si possible) retourn 0 si il y n'a pas de solution 1 sinon
-int solver (int board[9][9])
+void init_grid(char *buffer_pt,int* grid)
 {
-    int *index;
-    index = next_empty(board);
+	size_t index_grid = 0;
+	char ch;
 
-    if (index[0] == -1)
-    {
-        return 1;    
-    }
-
-    int i = index[0];
-    int j = index[1];
-
-    for (int nb = 1; nb <= 9; nb++)
-    {
-        if (check_case(nb,i,j,board) != 0 )
-        {
-            board[i][j] = nb;
-            if (solver(board))
-                return 1;
-        }
-        board[i][j] = 0;
-    }
-    return 0;
+	for(size_t index_buffer = 0; index_buffer<110; index_buffer++)
+	{
+		ch = *(buffer_pt + index_buffer);
+		if(ch == 46)
+		{
+			*(grid + index_grid) = 0;
+			index_grid++;
+		}
+		else
+		{
+			if(ch>48 && ch<58)
+			{
+				*(grid + index_grid) = (int)ch - 48;
+				index_grid++;
+			}
+		}
+	}
 }
 
-void print (int board[9][9])
+int canBeDone(int*grid, size_t row, size_t col, int n)
 {
-    for (int i = 0; i < 9; i++)
-    {
-        for (int j = 0; j < 9; j++)
-        {
-            printf("%i ",board[i][j]);
-        }
-        printf("%c",'\n');
-    }
+	//Set the position of the top left cell in the square 
+	int col_square = (col/3)*3;
+	int row_square = (row/3)*3;
+
+	//Searching
+	for(size_t index = 0; index < 9; index++)
+	{
+		if (*(grid + row*9 + index) == n) return 0; //search n in the column
+		if (*(grid + index*9 +col) == n) return 0;  //search n in the row
+		if (*(grid + (row_square+(index%3))*9 + (col_square+(index/3))) == n) return 0; //search n in the square
+	}
+
+	return 1;
 }
 
-int mat[9][9] = {
-{0,0,0,0,0,4,5,8,0},
-{0,0,0,7,2,1,0,0,3},
-{4,0,3,0,0,0,0,0,0},
-{2,1,0,0,6,7,0,0,4},
-{0,7,0,0,0,0,2,0,0},
-{6,3,0,0,4,9,0,0,1},
-{3,0,6,0,0,0,0,0,0},
-{0,0,0,1,5,8,0,0,6},
-{0,0,0,0,0,6,9,5,0}
-};
+int emptyCell(int* grid, size_t *row, size_t *col) 
+{
+	for (size_t row_index = 0; row_index < 9; row_index++) 
+	{
+    		for (size_t col_index = 0; col_index < 9; col_index++) 
+		{
+      		if (*(grid+row_index*9 + col_index)==0)  
+			{
+        		*row = row_index;
+        		*col = col_index;
+				return 1; //positive research
+      		}
+    	}
+  	}
+  	return 0;//negatif research
+}
 
+int solver_func(int *grid)
+{
+	size_t row;
+	size_t col;
+	if(!emptyCell(grid,&row,&col)) //positive exit case (all cell are filled)
+	{
+		return 1;
+	}
+	for(int value = 1; value<10; value++)
+	{
+		if (canBeDone(grid,row,col,value))
+		{
+			*(grid + row*9 + col) = value;
+			if(solver_func(grid))
+			{
+				return 1; 
+			}
+			else
+			{
+				*(grid + row*9 + col) = 0;
+			}
+		}
+			
+	}
+	return 0;
+}

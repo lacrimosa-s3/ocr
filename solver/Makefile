@@ -1,24 +1,19 @@
 # Makefile
 
-CPPFLAGS = -MMD
 CC = gcc
-CFALGS = -Wall -Wextra
-LDFLAGS =
-LDLIBS =
+CFLAGS = `pkg-config --cflags gtk+-3.0` -c
+LDLIBS = `pkg-config --libs gtk+-3.0`
 
-SRC = main.c solver.c
-OBJ = ${SRC:.c=.o}
-DEP = ${SRC:.c=.d}
+EXE = interface
 
-solver: ${OBJ}
+all: $(EXE)
 
--include ${DEP}
+$(foreach f, $(EXE), $(eval $(f):))
 
 .PHONY: clean
 
 clean:
-	${RM} ${OBJ}
-	${RM} ${DEP}
-	${RM} solver
+		${RM} $(EXE)
 
 # END
+

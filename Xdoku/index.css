@@ -1,0 +1,342 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.header
+{
+    min-height: 100vh;
+    width:  100%;
+    background-image: linear-gradient(rgba(4,9,30,0.7),rgba(4,9,30,0.7)),url(image1.jpeg);
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+nav
+{
+    display: flex;    
+    padding: 2% 6%;
+    justify-content: space-between;
+    align-items: center;
+}
+nav img
+{
+   width: 200px; 
+}
+.nav-links
+{
+    flex: 1;
+    text-align: right;
+}
+
+.nav-links ul li
+{
+    list-style: none;
+    display: inline-block;
+    padding: 8px 12px;
+    position: relative;
+
+}
+
+.nav-links ul li a
+{
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+
+}
+
+.nav-links ul li::after
+{
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: #fff;
+    display: block;
+    margin: auto;
+    transition: 0.5s;
+}
+
+.nav-links ul li:hover::after
+{
+    width: 100%;
+}
+
+.text-box
+{
+    width: 90%;
+    color: #fff;
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transition: translate(-50%,-50%);
+    text-align: center;
+}
+
+.text-box h1
+{
+    font-size: 100px;
+}
+.text-box p
+{
+    margin: 10px 0 40px;
+    font-size: 40px;
+    color: #fff;
+}
+
+@media(max-width: 700px)
+{
+    .text-box h1
+    {
+    font-size: 30px;
+    }
+    
+}
+h2
+{
+    font-size: 60px;
+    font-weight: 600;
+    color: #fff;
+
+}
+h1
+{
+    font-size: 36px;
+    font-weight: 600;
+}
+
+h3
+{
+    text-align: center;
+    font-weight: 600;
+    margin: 10px;
+}
+
+
+.presentation
+{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    padding-top: 50px;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.644),rgba(4, 9, 30, 0)),url(image1draw.jpeg);
+    min-height: 100vh;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+}
+
+.row
+{
+    margin: auto 5%;
+    margin-top: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+
+@media(max-width: 700px)
+{
+    .row
+    {
+        flex-direction: column;
+    }
+}
+
+.presentation-col
+{
+    flex-basis: 32%;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.presentation-col img
+{
+    width: 100%;
+    display: block;
+}
+
+.layer
+{
+    background-color: transparent;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: 0.5s;
+
+}
+
+.layer:hover
+{
+    background-color: rgba(4,9,30,0.7);
+}
+
+.layer .txt
+{
+    width: 100%;
+    font-weight: 500;
+    color: white;
+    position:absolute;
+    opacity: 0;
+    transform: 0.5s;
+}
+
+.layer:hover .txt
+{
+    top: 10%;
+    opacity: 1;
+}
+
+.txt p
+{
+    font-size: 26px;
+}
+
+.txt h3
+{
+    font-size: 40px;
+}
+
+.end
+{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    padding-top: 50px;
+    background-image: linear-gradient(rgba(4, 9, 30, 0),rgba(4, 9, 30, 0)),url(image1draw2.jpeg);
+    min-height: 100vh;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    align-items: center;
+}
+
+.finalcontainer
+{
+    margin: 100px auto;
+    width: 80%;
+    background-image: linear-gradient(rgba(4, 9, 30, 0.8),rgba(4, 9, 30, 0.2)),url(glitch2.jpg);
+    border-radius: 10px;
+    position: relative;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.finalcontainer p
+{
+    font-size: 40px;
+    color: white;
+    margin: 5%;
+}
+
+.finalcontainer h3
+{
+    font-size: 60px;
+    color: white;
+}
+
+.downloadbutton
+{
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 30px 50px;
+    font-size: 20px;
+    background: transparent;
+    position: relative;
+    cursor: pointer;
+}
+
+.downloadbutton:hover
+{
+    border: 1px solid tomato;
+    background: tomato;
+    transition: 1s;
+}
+
+@media(max-width: 700px)
+{
+    .finalcontainer h3
+    {
+        font-size: 24px;
+    }
+    .finalcontainer p
+    {
+        font-size: 15px;
+    }
+}
+
+.footer
+{
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    padding: 30px 0;
+    background-color: rgb(4, 9, 30);
+    background-image: url(image1draw2inverse.jpg);
+    min-height: 100vh;
+    background-position: center;
+    background-size: cover;
+    position: relative;
+    align-items: center;
+}
+
+.footer h4
+{
+    margin-bottom: 25px;
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 35px;
+    color: white;
+}
+
+.footer p
+{
+    font-size: 25px;
+    color: white;
+    background-color: black;
+}
+
+.member h4
+{
+    margin-bottom: 25px;
+    margin-top: 20px;
+    font-weight: 600;
+    font-size: 40px;
+    color: white;
+}
+
+.member p
+{
+    font-size: 25px;
+    color:white;
+    background-color: transparent;
+}
+.member
+{
+    width: 100%;
+    background-color: white;
+    flex-basis: 32%;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+    margin: 5px;
+}
+
+
+.member img
+{
+    width: 100%;
+    display: block;
+}
+

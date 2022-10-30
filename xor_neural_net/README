@@ -1,0 +1,30 @@
+
+
+Enter make in the terminal, then enter ./net
+
+Then enter the number of times the network have to train (usually > 10 000)
+
+After that, you will have to enter the learning rate (a flot between 0 and 1)
+
+and finaly, enter 2 number (0 or 1) separated by a  space.
+
+Example :
+
+
+Enter how many time you want the network to train
+10000
+
+Enter the learning rate
+0.10
+
+Training is done...
+
+Enter input to test:
+1 1
+Output: 0
+
+Enter input to test:
+0 1
+Output: 1
+
+

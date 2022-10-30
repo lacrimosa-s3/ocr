@@ -1,0 +1,32 @@
+To use hough line detection and cropping algorithm please follow these simple steps:
+
+Step1 image :
+for now the only sudokus that function are those with pure black on white,
+with low disparity in line thickness.
+the issues for functionality are due to the nonimplementation of a proper Otsu algorithm
+and an issue with the lecture of hough space data.
+
+
+Step2 launching:
+to have the algorithm run simply type "make" whilst in this folder followed by "./hough_line".
+check the "outp" folder for cropped and labelled cases.
+
+Step3 Enjoy :
+
+Enjoy your images
+
+
+
+
+TO IMPROVE:
+
+-fix reading from hough space to include thinner lines within thicker borders
+-make a more reliable hough space lecture algorithm
+-implement modifications to crop out lines surrounding the cases.
+
+
+Completed and functional:
+
+-Hough Line detection and board generation
+-Cropping algorithm
+-case saving into dedicated folder with proper labelling
